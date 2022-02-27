@@ -51,8 +51,6 @@ if uname -r | grep -q WSL; then
     l_base='/mnt'$l_base
 fi
 
-. "$l_base"/config
-
 # note: Git Bash must be run as Administrator or the [Developer
 # Mode](https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development)
 # must be enabled!
@@ -107,6 +105,7 @@ ln -sfn "$odir" "$ldir"
 ls -l "$ldir"
 
 cd "$l_base"
+. ./config
 
 if [ "$lang" = javascript ]; then
     ldir="$JAVASCRIPT_MODULES_DIR/kaitai-struct"; { if [ -L "$ldir" ]; then rm -v "$ldir"; elif [ -d "$ldir" ]; then  rm -vrf "$ldir"; fi; }
