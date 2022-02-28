@@ -3,6 +3,13 @@
 set -e
 set -o pipefail
 
+o_base=/r/Temp
+l_base=/c/temp/kaitai_struct/tests
+if uname -r | grep -q WSL; then
+    o_base='/mnt'$o_base
+    l_base='/mnt'$l_base
+fi
+
 lang=$1
 
 case $lang in
@@ -43,13 +50,6 @@ cpp_stl_98 | cpp_stl_11 )
     echo "Error: unrecognized lang '$lang', exiting"
     exit 2
 esac
-
-o_base=/r/Temp
-l_base=/c/temp/kaitai_struct/tests
-if uname -r | grep -q WSL; then
-    o_base='/mnt'$o_base
-    l_base='/mnt'$l_base
-fi
 
 # note: Git Bash must be run as Administrator or the [Developer
 # Mode](https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development)
