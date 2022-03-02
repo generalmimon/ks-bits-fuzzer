@@ -80,7 +80,7 @@ bit_layouts_all = get_bit_layouts(FIELDS, MAX_BITS, TOTAL_BITS)
 bit_layouts = list(filter(lambda bl: (MAX_BITS in bl) or (MAX_BITS - 1 in bl), bit_layouts_all))
 ```
 
-Using the recommended configuration, this will select **57 layouts** from a total of 2593. These 57 layouts will generate 2688 tests[^1]. If this is too much, exclude layouts only containing the `MAX_BITS - 1` field (in most languages this field didn't cause problems, so far it only did in PHP):
+Using the recommended configuration, this will select **57 layouts** from a total of 2593. These 57 layouts will generate 2688 tests[^1]. If this is too much, exclude layouts only containing the `MAX_BITS - 1` field:
 
 ```py
 bit_layouts = list(filter(lambda bl: (MAX_BITS in bl), bit_layouts_all))
@@ -92,6 +92,8 @@ bit_layouts = list(filter(lambda bl: (MAX_BITS in bl), bit_layouts_all))
 2. take tens of minutes to compile (especially in C++/STL and Go) - you'll notice if you wait 40 minutes (for 2688 tests) or 20 minutes (for 1248 tests) per endianness.
 
 Excluding the `MAX_BITS - 1` field reduces the number to 1248 tests (27 layouts), which keep these problematic factors within reasonable limits: building tests takes 18 minutes for a single bit endianness (double for both endians); object files are 730 MiB and the resulting executable `ks_tests` takes 166 MiB, so it fits into 1 GiB nicely.
+
+However, it is important to eventually test bit layouts with the `MAX_BITS - 1` field as well, because they can also detect bugs (especially in languages where signed bit shifts are used).
 
 #### Fill patterns
 
