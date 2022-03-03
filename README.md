@@ -86,12 +86,12 @@ Using the recommended configuration, this will select **57 layouts** from a tota
 bit_layouts = list(filter(lambda bl: (MAX_BITS in bl), bit_layouts_all))
 ```
 
-2688 tests (for both `MAX_BITS` and `MAX_BITS - 1` fields) doesn't sound like much, but in compiled languages they
+2688 tests (for both `MAX_BITS` and `MAX_BITS - 1` fields) doesn't sound like much, but in compiled languages (C++/STL, Nim):
 
-1. require more than 1 GiB of storage (in C++/STL every test is compiled to a ~0.6 MiB ".o" object file, so 2688 object files alone need 1.6 GiB),
-2. take tens of minutes to compile - you'll notice if you wait 40 minutes (for 2688 tests) or 20 minutes (for 1248 tests) per endianness.
+1. every test is compiled to a large executable or object file (C++/STL: ~0.6 MiB ".o" object file, Nim: ~0.2 MiB ".exe" executable on Windows), so thousands of tests require lots of disk memory (e.g. in C++/STL, so 2688 object files alone need 1.6 GiB),
+2. take tens of minutes to compile - you'll notice if you wait 40 minutes (for 2688 tests) or 20 minutes (for 1248 tests) in C++/STL per endianness.
 
-Excluding the `MAX_BITS - 1` field reduces the number to 1248 tests (27 layouts), which keep these problematic factors within reasonable limits: building tests takes 18 minutes for a single bit endianness (double for both endians); object files are 730 MiB and the resulting executable `ks_tests` takes 166 MiB, so it fits into 1 GiB nicely.
+Excluding the `MAX_BITS - 1` field reduces the number to 1248 tests (27 layouts), which keep these problematic factors within reasonable limits: building tests in C++/STL takes 18 minutes for a single bit endianness (double for both endians); object files are 730 MiB and the resulting executable `ks_tests` takes 166 MiB, so it fits into 1 GiB nicely.
 
 However, it is important to eventually test bit layouts with the `MAX_BITS - 1` field as well, because they can also detect bugs (especially in languages where signed bit shifts are used).
 
