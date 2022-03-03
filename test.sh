@@ -146,7 +146,8 @@ for bit_endian in be le; do
     echo './spec_kst_to_all:'
     ./spec_kst_to_all -t "$lang" -f --all-specs
 
-    ./ci-"$lang"
+    echo "./ci-$lang:"
+    time ./ci-"$lang"
     echo "Exit code: $?"
     odir=$o_base/test_out/$lang
     mkdir -p "$odir"
